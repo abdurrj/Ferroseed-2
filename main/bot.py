@@ -49,17 +49,41 @@ async def on_ready():
     print("Loaded modules: "+ ', '.join(i for i in loaded_modules))
     print("Modules not loaded: "+ ', '.join(i for i in not_loaded_modules))
 
+
+
 @client.command()
 @commands.is_owner()
 async def extension(ctx, task:str=None, module:str=None):
     modules = ext_modules_open()
     if task == "names":
-        print(', '.join(i for i in modules))
+        await ctx.send(', '.join(i for i in modules))
     elif task == "add":
         modules.append(module)
         ext_modules_write(modules)
     elif task == "remove":
         modules.pop(module)
+        ext_modules_write(modules)
+    elif task == "load":
+        try:
+            client.load_extension('modules.'+module)
+            print(f"{module} has been loaded")
+        except Exception as error:
+            print(f"Unable to load {module}\nError: {error}")
+    elif task == "unload":
+        try:
+            client.unload_extension('modules.'+module)
+            print(f"{module} has been unloaded")
+        except Exception as error:
+            print(f"Unable to unload {module}\nError: {error}")
+    elif task == "reload":
+        try:
+            client.reload_extension('modules.'+module)
+            print(f"Reloaded {module}")
+        except Exception as error:
+            print(f"Unable to reload {module}\nError: {error}")
+    else:
+        await ctx.send("Please select a task: names, add, remove, load, unload, reload\nfollowed by name of a module")
+
 
 
     modules.append(module)
