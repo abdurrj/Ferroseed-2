@@ -5,19 +5,21 @@ import json
 
 def get_prefix(client, message):
     with open(prefix_path, 'r', encoding='utf-8') as f:
-        prefixes = json.load(f)
-    return prefixes[str(message.guild.id)]
+        data = json.load(f)
+        guild_dict = data[str(message.guild.id)]
+    return guild_dict["prefix"]
 
 def ext_modules_open():
     with open('main/data/ext_modules.json') as f:
         modules = json.load(f)
         return modules
+        
 def ext_modules_write(data):
     with open('main/data/ext_modules.json') as f:
         json.dump(data, f)
 
 TOKEN = open("main/token.txt", "r").readline()
-prefix_path = 'main/data/prefixes.json'
+prefix_path = 'main/data/settings.json'
 client = commands.Bot(
     command_prefix = (get_prefix),
     intents = intents)
@@ -29,6 +31,7 @@ async def on_message(message):
         return
     else:
         await client.process_commands(message)
+
 
 @client.event
 async def on_ready():
@@ -48,7 +51,6 @@ async def on_ready():
     
     print("Loaded modules: "+ ', '.join(i for i in loaded_modules))
     print("Modules not loaded: "+ ', '.join(i for i in not_loaded_modules))
-
 
 
 @client.command()
@@ -83,11 +85,6 @@ async def extension(ctx, task:str=None, module:str=None):
             print(f"Unable to reload {module}\nError: {error}")
     else:
         await ctx.send("Please select a task: names, add, remove, load, unload, reload\nfollowed by name of a module")
-
-
-
-    modules.append(module)
-
 
 
 client.run(TOKEN)
