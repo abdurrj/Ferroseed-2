@@ -43,8 +43,7 @@ class server_settings(commands.Cog):
         data = json_open(settings)
         data[str(guild.id)] = {
             "prefix":standard_prefix,
-            "welcome_channel":None,
-            "pet_stat":"random"
+            "welcome_channel":None
         }
         json_write(settings, data)
 

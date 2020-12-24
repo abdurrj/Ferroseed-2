@@ -1,3 +1,14 @@
 {
-    
+    "775692986449264740": {
+        "pet_stat": "random",
+        "chance": 0.75,
+        "Total pet": 4,
+        "Total hurt": 4,
+        "Members": {
+            "138411165075243008": {
+                "pet": 4,
+                "hurt": 4
+            }
+        }
+    }
 }

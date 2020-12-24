@@ -1,12 +1,6 @@
 {
-    "742144472296718396": {
-        "prefix": "++",
-        "welcome_channel": "742144639082954844",
-        "pet_stat": "random"
-    },
     "775692986449264740": {
-        "prefix": "fb!",
-        "welcome_channel": null,
-        "pet_stat": "random"
+        "prefix": "++",
+        "welcome_channel": null
     }
 }
