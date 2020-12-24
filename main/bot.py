@@ -56,6 +56,7 @@ async def on_ready():
 @client.command()
 @commands.is_owner()
 async def extension(ctx, task:str=None, module:str=None):
+    """Command to add, remove or load/unload extensions"""
     modules = ext_modules_open()
     if task == "names":
         await ctx.send(', '.join(i for i in modules))
