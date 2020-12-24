@@ -53,7 +53,7 @@ async def on_ready():
     print("Modules not loaded: "+ ', '.join(i for i in not_loaded_modules))
 
 
-@client.command()
+@client.command(hidden=True)
 @commands.is_owner()
 async def extension(ctx, task:str=None, module:str=None):
     """Command to add, remove or load/unload extensions"""

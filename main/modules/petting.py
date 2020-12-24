@@ -1,4 +1,4 @@
-import discord, json
+import discord, json, asyncio
 import numpy as np
 from discord.ext import commands
 from discord.ext.commands import Cog, CommandOnCooldown
@@ -17,10 +17,9 @@ def json_write(path, data):
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
-class pet(commands.Cog):
+class petting(commands.Cog):
     def __init__(self, client):
         self.client = client
-
 
     @Cog.listener("on_guild_join")
     async def guild_add(self, guild):
@@ -42,7 +41,7 @@ class pet(commands.Cog):
         message = await ctx.send(embed=embed)
 
         emoji_list = ['✅','❌']
-        data = json_open(settings)
+        data = json_open(pet_count_path)
         guild_settings = data[str(ctx.guild.id)]
         for i in emoji_list:
             await message.add_reaction(i)
@@ -62,13 +61,13 @@ class pet(commands.Cog):
                     await ctx.send("Pet settings changed to randomize pets")
 
                 data[str(ctx.guild.id)] = guild_settings
-                json_write(settings, data)
+                json_write(pet_count_path, data)
+                await message.delete()
                     
-            except:
-                await message.clear_reactions()
-                await message.edit(content="You did not react in time, settings not changed")
+            except asyncio.TimeoutError:
+                break
 
-    @commands.command()
+    @commands.command(description="You can try petting Ferroseed, though Iron Barbs might kick in and hurt you")
     @commands.cooldown(1, 5, type=BucketType.user)
     async def pet(self, ctx):
         data = json_open(pet_count_path)
@@ -99,7 +98,7 @@ class pet(commands.Cog):
             embed = discord.Embed(
             colour = discord.Colour.green())
             embed.add_field(name='Ferroseed anticipated this', value=f"{ctx.author.mention} pet Ferroseed! <:ferroHappy:734285644817367050> \n"
-                                                                        "\nYou have pet me "+str(pet_count)+"x times!")
+                                                                        "\nYou have pet me **"+str(pet_count)+"x** times!")
 
         elif selection[0] == 'no pet':
             total_hurt = guild_dict["Total hurt"]
@@ -112,7 +111,7 @@ class pet(commands.Cog):
             colour = discord.Colour.red())
             embed.set_author(name='Ouch!')
             embed.add_field(name='*Sorry!*', value=f"{ctx.author.mention} got hurt by Iron Barbs <:ferroSad:735707312420945940>\n"
-                                                    "\nI've hurt you a total of "+ str(pet_hurt) +"x times.")
+                                                    "\nI've hurt you a total of **"+ str(pet_hurt) +"x** times.")
 
         Member_dict[str(ctx.author.id)] = member
         guild_dict["Members"] = Member_dict
@@ -129,6 +128,7 @@ class pet(commands.Cog):
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def pet_chance(self, ctx, value:float=0.75):
+        """Change % chance of petting/getting hurt"""
         data = json_open(pet_count_path)
         guild_dict = data[str(ctx.guild.id)]
         if value>=1 or value<0:
@@ -139,17 +139,31 @@ class pet(commands.Cog):
             json_write(pet_count_path, data)
             value = value*100
             value = int(value)
-            await ctx.send(f"Ferroseed has now {value}% chance of getting pet")
+            await ctx.send(f"Ferroseed has now **{value}%** chance of getting pet")
 
 
     @commands.command()
-    async def pets(self, ctx):
+    async def pets_total(self, ctx):
+        """Show server total pet and hurt count"""
         data = json_open(pet_count_path)
         guild_dict = data[str(ctx.guild.id)]
         petcount = str(guild_dict["Total pet"])
         hurtcount = str(guild_dict["Total hurt"])
-        await ctx.send("I've been pet **"+petcount+"x** times and I've hurt you **"+hurtcount+"x** times")
+        await ctx.send("I've been pet **"+petcount+"x** times and I've hurt all of you **"+hurtcount+"x** times")
+
+    @commands.command()
+    async def pets(self, ctx):
+        """Show personal pet and hurt count"""
+        data = json_open(pet_count_path)
+        guild_dict = data[str(ctx.guild.id)]
+        Member_dict = guild_dict["Members"]
+        if str(ctx.author.id) in Member_dict.keys():
+            user_dict = Member_dict[str(ctx.author.id)]
+            pet = str(user_dict["pet"])
+            hurt = str(user_dict["hurt"])
+            allowed_mentions = discord.AllowedMentions(users=False)
+            await ctx.send(f"{ctx.author.mention}! you have pet me **{pet}x** times, and have been hurt **{hurt}x** times.", allowed_mentions=allowed_mentions)
 
 
 def setup(client):
-    client.add_cog(pet(client))  
+    client.add_cog(petting(client))  
