@@ -10,6 +10,7 @@ def json_open(path):
         data = json.load(f)
         return data
 
+
 def json_write(path, data):
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
@@ -18,6 +19,7 @@ def json_write(path, data):
 class server_settings(commands.Cog):
     def __init__(self, client):
         self.client = client
+
 
     #### Prefix settings
     @Cog.listener("on_message")
@@ -37,6 +39,7 @@ class server_settings(commands.Cog):
             json_write(settings, data)
             await message.channel.send("Prefix has been reset to fb!. To change it, use fb!change_prefix")
         
+
     @Cog.listener("on_guild_join")
     async def new_guild_prefix(self, guild):
         """Create guild_dict when bot joins new server"""
@@ -47,6 +50,7 @@ class server_settings(commands.Cog):
         }
         json_write(settings, data)
 
+
     @Cog.listener("on_guild_remove")
     async def remove_guild_prefix(self, guild):
         """Remove guild_dict when bot leaves a server"""
@@ -54,6 +58,7 @@ class server_settings(commands.Cog):
         data.pop(str(guild.id))
         json_write(settings, data)
     
+
     @commands.command(hidden=True)
     @commands.has_permissions(administrator=True)
     async def change_prefix(self, ctx, prefix:str=standard_prefix):
@@ -78,6 +83,7 @@ class server_settings(commands.Cog):
         json_write(settings, data)
         await ctx.send(f"Welcome channel set to {channel}")
 
+
     @Cog.listener("on_member_join")
     async def member_welcome(self, member):
         """If welcome channel is set, welcome message will be sent there"""
@@ -86,7 +92,7 @@ class server_settings(commands.Cog):
         if guild_dict["welcome_channel"]:
             welcome_channel = member.guild.get_channel(int(guild_dict["welcome_channel"]))
             embed = discord.Embed(colour=0x62eb96)
-            embed.add_field(name='Someone new joined the server!', value=f"Please say welcome to {member.mention}")
+            embed.add_field(name='Someone new joined the server!', value=f"Please welcome {member.mention}")
             await welcome_channel.send(embed=embed)
 
 

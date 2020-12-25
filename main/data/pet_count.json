@@ -2,31 +2,31 @@
     "775692986449264740": {
         "pet_stat": "random",
         "chance": 0.75,
-        "Total pet": 7,
-        "Total hurt": 5,
+        "Total pet": 0,
+        "Total hurt": 0,
         "Members": {
             "138411165075243008": {
-                "pet": 6,
-                "hurt": 5
+                "pet": 0,
+                "hurt": 0
             },
             "748314853080301608": {
-                "pet": 1,
+                "pet": 0,
                 "hurt": 0
             }
         }
     },
     "742144472296718396": {
         "pet_stat": "random",
-        "chance": 0.8,
-        "Total pet": 2,
+        "chance": 0.75,
+        "Total pet": 0,
         "Total hurt": 0,
         "Members": {
             "138411165075243008": {
-                "pet": 1,
+                "pet": 0,
                 "hurt": 0
             },
             "748314853080301608": {
-                "pet": 1,
+                "pet": 0,
                 "hurt": 0
             }
         }

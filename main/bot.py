@@ -52,6 +52,21 @@ async def on_ready():
     print("Loaded modules: "+ ', '.join(i for i in loaded_modules))
     print("Modules not loaded: "+ ', '.join(i for i in not_loaded_modules))
 
+@client.command()
+async def set_game(ctx, a=None):
+    activity = discord.Game(a)
+    await client.change_presence(activity=activity)
+
+
+@client.command()
+async def stop_game(ctx):
+    await client.change_presence(activity=None)
+
+
+@client.command()
+async def set_watching(ctx, w=None):
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=w))
+
 
 @client.command(hidden=True)
 @commands.is_owner()

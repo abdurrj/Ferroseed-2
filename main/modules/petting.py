@@ -1,21 +1,13 @@
-import discord, json, asyncio
+import discord, asyncio
 import numpy as np
 from discord.ext import commands
 from discord.ext.commands import Cog, CommandOnCooldown
 from discord.ext.commands.cooldowns import BucketType
+from .server_settings import json_write, json_open
 
 
 pet_count_path = 'main/data/pet_count.json'
 settings = 'main/data/settings.json'
-
-def json_open(path):
-    with open(path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-        return data
-
-def json_write(path, data):
-    with open(path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
 
 class petting(commands.Cog):
     def __init__(self, client):
@@ -26,7 +18,7 @@ class petting(commands.Cog):
         data = json_open(pet_count_path)
         data[str(guild.id)] = {
             "pet_stat":"random",
-            "chance":0.8,
+            "chance":0.75,
             "Total pet":0,
             "Total hurt":0,
             "Members":{}
@@ -68,7 +60,7 @@ class petting(commands.Cog):
                 break
 
     @commands.command(description="You can try petting Ferroseed, though Iron Barbs might kick in and hurt you")
-    @commands.cooldown(1, 5, type=BucketType.user)
+    @commands.cooldown(1, 3, type=BucketType.user)
     async def pet(self, ctx):
         data = json_open(pet_count_path)
         guild_dict = data[str(ctx.guild.id)]
@@ -86,7 +78,7 @@ class petting(commands.Cog):
             hurt_chance = float(1 - pet_chance)
             selection = np.random.choice(choices, 1, p=[pet_chance, hurt_chance])
         elif random == "always":
-            selection = 'pet'
+            selection = ['pet']
 
         if selection[0] == 'pet':
             total_pet = guild_dict["Total pet"]
@@ -109,7 +101,6 @@ class petting(commands.Cog):
             member["hurt"] = pet_hurt
             embed = discord.Embed(
             colour = discord.Colour.red())
-            embed.set_author(name='Ouch!')
             embed.add_field(name='*Sorry!*', value=f"{ctx.author.mention} got hurt by Iron Barbs <:ferroSad:735707312420945940>\n"
                                                     "\nI've hurt you a total of **"+ str(pet_hurt) +"x** times.")
 
@@ -163,6 +154,11 @@ class petting(commands.Cog):
             hurt = str(user_dict["hurt"])
             allowed_mentions = discord.AllowedMentions(users=False)
             await ctx.send(f"{ctx.author.mention}! you have pet me **{pet}x** times, and have been hurt **{hurt}x** times.", allowed_mentions=allowed_mentions)
+
+    @commands.command()
+    async def birbpet(self, ctx):
+        """To pet the mint birb"""
+        await ctx.send("<a:PetTheBirb:754269160598536214>")
 
 
 def setup(client):

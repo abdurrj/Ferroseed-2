@@ -1,3 +1,4 @@
 
 *.txt
 *.pyc
+main/data/fc.json
