@@ -54,7 +54,7 @@ class server_settings(commands.Cog):
         data.pop(str(guild.id))
         json_write(settings, data)
     
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.has_permissions(administrator=True)
     async def change_prefix(self, ctx, prefix:str=standard_prefix):
         """Customize prefix for the server"""
@@ -67,7 +67,7 @@ class server_settings(commands.Cog):
 
 
     #### Member Welcome
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.has_permissions(administrator=True)
     async def set_welcome(self, ctx, channel:discord.TextChannel):
         """Set welcome channel for the server"""
