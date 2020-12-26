@@ -60,7 +60,6 @@ class petting(commands.Cog):
                 break
 
     @commands.command(description="You can try petting Ferroseed, though Iron Barbs might kick in and hurt you")
-    @commands.cooldown(1, 3, type=BucketType.user)
     async def pet(self, ctx):
         data = json_open(pet_count_path)
         guild_dict = data[str(ctx.guild.id)]
