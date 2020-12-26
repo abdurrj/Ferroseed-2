@@ -48,6 +48,7 @@ async def on_ready():
             print(f"Could not load module {i}")
             print(f"{i} {error}")
             not_loaded_modules.append(i)
+    client.load_extension('RaidCommands')
     
     print("Loaded modules: "+ ', '.join(i for i in loaded_modules))
     print("Modules not loaded: "+ ', '.join(i for i in not_loaded_modules))
