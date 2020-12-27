@@ -4,6 +4,7 @@ from discord.utils import get, find
 import json, asyncio
 
 fc_path = 'main/data/fc.json'
+fc_path_test = 'main/data/fc_test.json'
 
 class fc(commands.Cog):
     def __init__(self, client):
@@ -99,14 +100,14 @@ class fc(commands.Cog):
         new_dict = fc_dict
 
         try:
-            with open("data/json/fc_test.json", "w", encoding='utf-8') as fc_dict:
+            with open(fc_path_test, "w", encoding='utf-8') as fc_dict:
                 json.dump(new_dict, fc_dict, indent=4, ensure_ascii=False)
                 proceed = "yes"
         except:
             proceed = "false"
         
         if proceed == "yes":
-            with open(fc_path, "w", encoding='utf-8') as fc_dict:
+            with open(fc_path_test, "w", encoding='utf-8') as fc_dict:
                 json.dump(new_dict, fc_dict, indent=4, ensure_ascii=False, sort_keys=True)
             await ctx.send("fc updated")
         else:
