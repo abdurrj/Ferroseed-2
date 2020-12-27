@@ -2,7 +2,7 @@ from discord.ext import commands
 from discord.ext.commands import Cog
 import json, discord
 
-settings = 'main/data/settings.json'
+settings = 'main/data/server_settings.json'
 standard_prefix = "fb!"
 
 def json_open(path):
@@ -88,13 +88,14 @@ class server_settings(commands.Cog):
     async def member_welcome(self, member):
         """If welcome channel is set, welcome message will be sent there"""
         data = json_open(settings)
-        guild_dict = data[str(member.guild.id)]
-        if guild_dict["welcome_channel"]:
-            welcome_channel = member.guild.get_channel(int(guild_dict["welcome_channel"]))
-            embed = discord.Embed(colour=0x62eb96)
-            embed.add_field(name='Someone new joined the server!', value=f"Please welcome {member.mention}")
-            await welcome_channel.send(embed=embed)
-
+        print(member.name)
+        if str(member.guild.id) in list(data.keys()):
+            guild_dict = data[str(member.guild.id)]
+            if guild_dict["welcome_channel"]:
+                welcome_channel = member.guild.get_channel(int(guild_dict["welcome_channel"]))
+                embed = discord.Embed(colour=0x62eb96)
+                embed.add_field(name='Someone new joined the server!', value=f"Please welcome {member.mention}")
+                await welcome_channel.send(embed=embed)
 
 
 def setup(client):
