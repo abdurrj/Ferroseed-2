@@ -74,7 +74,7 @@ class server_settings(commands.Cog):
     #### Member Welcome
     @commands.command(hidden=True)
     @commands.has_permissions(administrator=True)
-    async def set_welcome(self, ctx, channel:discord.TextChannel):
+    async def set_welcome(self, ctx, channel:discord.TextChannel=None):
         """Set welcome channel for the server"""
         data = json_open(settings)
         guild_dict = data[str(ctx.guild.id)]

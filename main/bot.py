@@ -37,7 +37,7 @@ async def on_message(message):
 async def on_ready():
     loaded_modules = []
     not_loaded_modules = []
-    print(f"logged in as {client.user.name}")
+    print(f"logged in as {client.user.name}\nID: {client.user.id}")
     print("\n--------\nLoading modules")
     modules = ext_modules_open()
     for i in modules:

@@ -3,13 +3,15 @@ from discord.ext import commands
 from discord.utils import get, find
 import json, asyncio
 
+fc_path = 'main/data/fc.json'
+
 class fc(commands.Cog):
     def __init__(self, client):
         self.client = client
 
     @commands.command()
     async def fc(self, ctx, *usid:discord.Member):
-        with open(r"main/data/fc.json", encoding='utf-8') as fc_dict:
+        with open(fc_path, encoding='utf-8') as fc_dict:
             fc_dict = json.load(fc_dict)
 
         if usid:
@@ -34,7 +36,7 @@ class fc(commands.Cog):
         check = arg_split[0]
         text = arg.split(' ', 1)[1]
         key = (text.split(',')[0]).strip()
-        with open(r"main/data/fc.json", encoding='utf-8') as fc_dict:
+        with open(fc_path, encoding='utf-8') as fc_dict:
             fc_dict = json.load(fc_dict)
         
         usid = str(ctx.message.author.id)
@@ -104,7 +106,7 @@ class fc(commands.Cog):
             proceed = "false"
         
         if proceed == "yes":
-            with open("data/json/fc.json", "w", encoding='utf-8') as fc_dict:
+            with open(fc_path, "w", encoding='utf-8') as fc_dict:
                 json.dump(new_dict, fc_dict, indent=4, ensure_ascii=False, sort_keys=True)
             await ctx.send("fc updated")
         else:
