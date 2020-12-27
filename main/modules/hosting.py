@@ -1,4 +1,7 @@
 from discord.ext import commands
+from discord.ext.commands import Cog
+from discord.utils import get
+import discord
 
 class Hosting(commands.Cog):
     def __init__(self, client):
@@ -41,8 +44,53 @@ class Hosting(commands.Cog):
         else:
             await ctx.send("Not this channel, it's important! <a:RBops2:718139698912034937>")
 
+    @Cog.listener("on_raw_reaction_add")
+    async def create_voice_channel(self, payload):
+        guild = self.client.get_guild(payload.guild_id)
+        message_id = payload.message_id
+        if message_id == 770315723464638484:
+            voice_category = self.client.get_channel(739139545202950161)
+            channel_list = guild.channels
+            channel_name_list = []
+            for i in range(0, len(channel_list)):
+                channel_name = channel_list[i].name
+                channel_name_list.append(channel_name)
+            if payload.emoji.name == '🟥':
+                channel_name = "a-red-voice-channel"
+                if channel_name in channel_name_list:
+                    print("Channel already created")
+                else:
+                    await guild.create_voice_channel(channel_name, category=voice_category)
+            elif payload.emoji.name == '🟩':
+                channel_name = "a-green-voice-channel"
+                if channel_name in channel_name_list:
+                    print("Channel already created")
+                else:
+                    await guild.create_voice_channel(channel_name, category=voice_category)
+            elif payload.emoji.name == '🟦':
+                channel_name = "a-blue-voice-channel"
+                if channel_name in channel_name_list:
+                    print("Channel already created")
+                else:
+                    await guild.create_voice_channel(channel_name, category=voice_category)
 
-
+    @Cog.listener("on_raw_reaction_remove")
+    async def remove_voice_channel(self, payload):
+        guild = self.client.get_guild(payload.guild_id)
+        message_id = payload.message_id
+        if message_id == 770315723464638484:
+            if payload.emoji.name == '🟥':
+                channel_name = "a-red-voice-channel"
+                channel = discord.utils.get(guild.voice_channels, name=channel_name)
+                await channel.delete()
+            elif payload.emoji.name == '🟩':
+                channel_name = "a-green-voice-channel"
+                channel = discord.utils.get(guild.voice_channels, name=channel_name)
+                await channel.delete()
+            elif payload.emoji.name == '🟦':
+                channel_name = "a-blue-voice-channel"
+                channel = discord.utils.get(guild.voice_channels, name=channel_name)
+                await channel.delete()
 
 
 def setup(client):

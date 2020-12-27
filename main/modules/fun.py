@@ -21,7 +21,7 @@ class fun(commands.Cog):
         await discord.Message.add_reaction(a, "<:ferroSad:735707312420945940>")
 
 
-    @commands.command(pass_context=True, name = 'caught', aliases=['c', 'catch', 'CAUGHT', 'CATCH', 'CAUGHT!', 'caught!', 'catch!', 'CATCH!'])
+    @commands.command(name = 'caught', aliases=['c', 'catch', 'CAUGHT', 'CATCH', 'CAUGHT!', 'caught!', 'catch!', 'CATCH!'])
     async def caught(self, ctx, *ball):
         id = ctx.message.author.id
         data = json_open('main/data/ball_list.json')

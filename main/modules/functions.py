@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import BadArgument, Cog
 from io import BytesIO
 import random, emoji, re, sys
 import numpy as np
@@ -90,34 +91,37 @@ class functions(commands.Cog):
         message = await  raffle_channel.history().find(lambda m: m.author.id == command_user.id)
         keyword = 'raffle time!'
 
-        if wnr_amount.isnumeric():
-            if keyword in message.content.lower():
-                if int(wnr_amount) < 1:
-                    await ctx.send("why would you do that :(")
-                else:
-                    await command_user.send("Thank you for being so awesome!")
-                    for reaction in message.reactions:
-                        seed = random.randrange(sys.maxsize)
-                        random.Random(seed)
-                        user_list = [user async for user in reaction.users()]
-                        print(user_list)
-                        participants = int(len(user_list))
-                        if int(wnr_amount) > int(participants):
-                            winner = random.sample(user_list, k=int(participants))
-                            winner_names = ', '.join([winner.name for winner in winner])
-                            winner_id = ', '.join([''.join('<@' + str(winner.id) + '>') for winner in winner])
-                        else:
-                            winner = random.sample(user_list, k=int(wnr_amount))
-                            winner_names = ', '.join([winner.name for winner in winner])
-                            winner_id = ', '.join([''.join('<@' + str(winner.id) + '>') for winner in winner])
-                        await command_user.send("\n"+str(participants) + " participants for the emoji: "+ str(reaction) + "\nWinner name(s):\n"
-                                    + str(winner_names)+"\nWinner ID:\n```"+str(winner_id) + "```")
-                        
+        if keyword in message.content.lower():
+            if int(wnr_amount) < 1:
+                await ctx.send("why would you do that :(")
             else:
-                await ctx.send("Sorry, I can't find your message in <#766277566934810634>. Does it have the keyword: " + keyword + ""
-                        "\nI can only see your last message, you can edit the message to add the keyword though!")
+                await command_user.send("Thank you for being so awesome!")
+                for reaction in message.reactions:
+                    seed = random.randrange(sys.maxsize)
+                    random.Random(seed)
+                    user_list = [user async for user in reaction.users()]
+                    print(user_list)
+                    participants = int(len(user_list))
+                    if int(wnr_amount) > int(participants):
+                        winner = random.sample(user_list, k=int(participants))
+                        winner_names = ', '.join([winner.name for winner in winner])
+                        winner_id = ', '.join([''.join('<@' + str(winner.id) + '>') for winner in winner])
+                    else:
+                        winner = random.sample(user_list, k=int(wnr_amount))
+                        winner_names = ', '.join([winner.name for winner in winner])
+                        winner_id = ', '.join([''.join('<@' + str(winner.id) + '>') for winner in winner])
+                    await command_user.send("\n"+str(participants) + " participants for the emoji: "+ str(reaction) + "\nWinner name(s):\n"
+                                + str(winner_names)+"\nWinner ID:\n```"+str(winner_id) + "```")
+                    
         else:
-            await ctx.send("What, you want __**" + wnr_amount + "**__ winner(s)? Maybe try a (positive) number?")
+            await ctx.send("Sorry, I can't find your message in <#766277566934810634>. Does it have the keyword: " + keyword + ""
+                    "\nI can only see your last message, you can edit the message to add the keyword though!")
+    
+
+    @gibroll.error
+    async def gibroll_error(self, ctx, error):
+        if isinstance(error, BadArgument):
+            await ctx.send("Something went wrong, please check your input, and make sure it's a number")
 
 
     # Check if this command is still in use. Remove if it is not
@@ -184,6 +188,37 @@ class functions(commands.Cog):
         else:
             await ctx.send("What, you want **" + wnr_amount + "** winner(s)? Maybe try a (positive) number?")
         await message.unpin()
+
+
+    @Cog.listener("on_raw_reaction_add")
+    async def reaction_pinning_add(self, payload):
+        if payload.emoji.name == "📌":
+            pin_channel = self.client.get_channel(payload.channel_id)
+            pin_msg = payload.message_id
+            pin_msg = await pin_channel.fetch_message(payload.message_id)
+            # pin_msg_user = [pin_msg.author.id]
+            # pin_reactor = discord.utils.find(lambda m : m.id == payload.user_id, pin_guild.members)
+            # pin_reactor_id = int(pin_reactor.id)
+            # valid_users = pin_msg_user + admin_users_id
+            # valid_users_test = all(user != pin_reactor_id for user in valid_users)
+            # if valid_users_test == False:
+            await pin_msg.pin()
+    
+    
+    @Cog.listener("on_raw_reaction_remove")
+    async def reaction_pinning_remove(self, payload):
+        if payload.emoji.name == "📌": 
+            pin_channel = self.client.get_channel(payload.channel_id)
+            pin_msg = payload.message_id
+            pin_msg = await pin_channel.fetch_message(payload.message_id)
+            # pin_msg_user = [pin_msg.author.id]
+            # pin_reactor = discord.utils.find(lambda m : m.id == payload.user_id, pin_guild.members)
+            # pin_reactor_id = int(pin_reactor.id)
+            # valid_users = pin_msg_user + admin_users_id
+            # valid_users_test = all(user != pin_reactor_id for user in valid_users)
+            # if valid_users_test == False: # use this if you want only message author and admins to be able to unpin
+            await pin_msg.unpin()
+
 
 
 def setup(client):

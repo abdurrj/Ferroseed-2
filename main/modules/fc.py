@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.utils import get, find
-import json
+import json, asyncio
 
 class fc(commands.Cog):
     def __init__(self, client):
@@ -72,8 +72,9 @@ class fc(commands.Cog):
                     elif str(reaction.emoji) == "❌":
                         await check_del.delete()
                         await ctx.send("Not deleted")
-                except:
-                    print("nothing")
+                        break
+                except asyncio.TimeoutError:
+                    break
                         
         elif check == "key":
             list(user_dict.keys())
