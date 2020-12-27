@@ -2,7 +2,7 @@ from discord.ext import commands
 from discord.ext.commands import Cog
 import json, discord
 
-settings = 'main/data/server_settings.json'
+settings = 'main/data/settings.json'
 standard_prefix = "fb!"
 
 def json_open(path):
@@ -78,7 +78,10 @@ class server_settings(commands.Cog):
         """Set welcome channel for the server"""
         data = json_open(settings)
         guild_dict = data[str(ctx.guild.id)]
-        guild_dict["welcome_channel"] = str(channel.id)
+        if channel:
+            guild_dict["welcome_channel"] = str(channel.id)
+        else:
+            guild_dict["welcome_channel"] = None
         data[str(ctx.guild.id)] = guild_dict
         json_write(settings, data)
         await ctx.send(f"Welcome channel set to {channel}")
