@@ -70,6 +70,8 @@ class fun(commands.Cog):
         data[str(ctx.author.id)] = greet
         json_write('main/data/user_greet.json', data)
         allowed_mentions = discord.AllowedMentions(users=False)
+        if not greet:
+            greet = "<:ferroHappy:734285644817367050>"
         await ctx.send(f"{ctx.author.mention}, I will now respond to `.hi` with {greet}", allowed_mentions=allowed_mentions)
     
 
