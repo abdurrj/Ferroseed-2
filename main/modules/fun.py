@@ -147,6 +147,12 @@ class fun(commands.Cog):
         # embed.add_field(name="Time:", value=only_tz_time)
         await ctx.send(embed=embed)
 
+    @Cog.listener("on_message")
+    async def say_morning(self, message):
+        allowed_mentions = discord.AllowedMentions(users=False)
+        if message.content.lower().startswith("morning"):
+            await message.channel.send(f"Morning {message.author.mention}!", allowed_mentions=allowed_mentions)
+
 
 def setup(client):
     client.add_cog(fun(client))    
