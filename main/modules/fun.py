@@ -10,7 +10,7 @@ class fun(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.morning_list = []
-        self.auto_clear_morning_list.start()
+        # self.auto_clear_morning_list.start()
 
     # Naught, for when you don't catch the pokemon
     @commands.command(pass_context=True, name = 'naught', aliases=['not'])
