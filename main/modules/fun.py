@@ -150,6 +150,8 @@ class fun(commands.Cog):
     @Cog.listener("on_message")
     async def say_morning(self, message):
         allowed_mentions = discord.AllowedMentions(users=False)
+        if message.author == self.client.user:
+            return
         if message.content.lower().startswith("morning"):
             await message.channel.send(f"Morning {message.author.mention}!", allowed_mentions=allowed_mentions)
 
