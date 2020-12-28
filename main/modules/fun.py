@@ -55,11 +55,12 @@ class fun(commands.Cog):
     @commands.command()
     async def hi(self, ctx):
         data = json_open('main/data/user_greet.json')
+        allowed_mentions = discord.AllowedMentions(None)
         if str(ctx.author.id) in data.keys():
             if data[str(ctx.author.id)]:
                 await ctx.send(data[str(ctx.author.id)])
             else:
-                await ctx.send("<:ferroHappy:734285644817367050>")
+                await ctx.send("<:ferroHappy:734285644817367050>",allowed_mentions=allowed_mentions)
         else:
             await ctx.send("<:ferroHappy:734285644817367050>")
 
