@@ -155,9 +155,11 @@ class fun(commands.Cog):
         if self.morning_response == "yes":
             await ctx.send("Turning off morning response")
             self.morning_response = "no"
+            return
         if self.morning_response == "no":
             await ctx.send("Turning on morning response")
             self.morning_response = "yes"
+            return
 
     @Cog.listener("on_message")
     async def say_morning(self, message):
