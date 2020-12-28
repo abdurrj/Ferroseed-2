@@ -58,9 +58,9 @@ class fun(commands.Cog):
         allowed_mentions = discord.AllowedMentions(users=False, roles=False, everyone=False)
         if str(ctx.author.id) in data.keys():
             if data[str(ctx.author.id)]:
-                await ctx.send(data[str(ctx.author.id)])
+                await ctx.send(data[str(ctx.author.id)], allowed_mentions=allowed_mentions)
             else:
-                await ctx.send("<:ferroHappy:734285644817367050>",allowed_mentions=allowed_mentions)
+                await ctx.send("<:ferroHappy:734285644817367050>")
         else:
             await ctx.send("<:ferroHappy:734285644817367050>")
 
