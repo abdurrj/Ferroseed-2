@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.ext.commands import Cog
 from datetime import datetime
 from .server_settings import json_open, json_write
@@ -9,6 +9,8 @@ import random
 class fun(commands.Cog):
     def __init__(self, client):
         self.client = client
+        self.morning_list = []
+        self.auto_clear_morning_list.start()
 
     # Naught, for when you don't catch the pokemon
     @commands.command(pass_context=True, name = 'naught', aliases=['not'])
@@ -147,13 +149,29 @@ class fun(commands.Cog):
         # embed.add_field(name="Time:", value=only_tz_time)
         await ctx.send(embed=embed)
 
+
+
     @Cog.listener("on_message")
     async def say_morning(self, message):
         allowed_mentions = discord.AllowedMentions(users=False)
         if message.author == self.client.user:
             return
-        if message.content.lower().startswith("morning"):
+        if message.content.lower().startswith("morning") and message.author not in self.morning_list:
             await message.channel.send(f"Morning {message.author.mention}! <:ferroHappy:734285644817367050>", allowed_mentions=allowed_mentions)
+            self.morning_list.append(message.author)
+
+    @commands.command(hidden=True)
+    @commands.has_permissions(administrator=True)
+    async def clear_morning(self, ctx):
+        self.morning_list = []
+
+    @commands.command(hidden=True)
+    async def print_morning(self, ctx):
+        print(self.morning_list)
+
+    @tasks.loop(hours=12)
+    async def auto_clear_morning_list(self):
+        self.morning_list = []    
 
 
 def setup(client):
