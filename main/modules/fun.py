@@ -55,7 +55,7 @@ class fun(commands.Cog):
     @commands.command()
     async def hi(self, ctx):
         data = json_open('main/data/user_greet.json')
-        allowed_mentions = discord.AllowedMentions(None)
+        allowed_mentions = discord.AllowedMentions(users=False, roles=False, everyone=False)
         if str(ctx.author.id) in data.keys():
             if data[str(ctx.author.id)]:
                 await ctx.send(data[str(ctx.author.id)])
