@@ -10,6 +10,7 @@ class fun(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.morning_list = []
+        self.morning_response = "yes"
         # self.auto_clear_morning_list.start()
 
     # Naught, for when you don't catch the pokemon
@@ -149,18 +150,26 @@ class fun(commands.Cog):
         # embed.add_field(name="Time:", value=only_tz_time)
         await ctx.send(embed=embed)
 
-
+    @commands.command(hidden=True)
+    async def morning_response(self, ctx):
+        if self.morning_response == "yes":
+            await ctx.send("Turning off morning response")
+            self.morning_response = "no"
+        if self.morning_response == "no":
+            await ctx.send("Turning on morning response")
+            self.morning_response = "yes"
 
     @Cog.listener("on_message")
     async def say_morning(self, message):
         allowed_mentions = discord.AllowedMentions(users=False)
-        if message.author == self.client.user:
-            return
-        if message.content.lower().startswith("morning") and message.author not in self.morning_list:
-            await message.channel.send(f"Morning {message.author.mention}! <:ferroHappy:734285644817367050>", allowed_mentions=allowed_mentions)
-            self.morning_list.append(message.author)
-            await asyncio.sleep(6*60*60)
-            self.morning_list.remove(message.author)
+        if self.morning_response == "yes":
+            if message.author == self.client.user:
+                return
+            if message.content.lower().startswith("morning") and message.author not in self.morning_list:
+                await message.channel.send(f"Morning {message.author.mention}! <:ferroHappy:734285644817367050>", allowed_mentions=allowed_mentions)
+                self.morning_list.append(message.author)
+                await asyncio.sleep(6*60*60)
+                self.morning_list.remove(message.author)
 
     @commands.command(hidden=True)
     @commands.has_permissions(administrator=True)
