@@ -153,7 +153,7 @@ class fun(commands.Cog):
         if message.author == self.client.user:
             return
         if message.content.lower().startswith("morning"):
-            await message.channel.send(f"Morning {message.author.mention}!", allowed_mentions=allowed_mentions)
+            await message.channel.send(f"Morning {message.author.mention}! <:ferroHappy:734285644817367050>", allowed_mentions=allowed_mentions)
 
 
 def setup(client):
