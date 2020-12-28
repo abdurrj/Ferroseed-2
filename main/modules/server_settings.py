@@ -90,6 +90,9 @@ class server_settings(commands.Cog):
     @Cog.listener("on_member_join")
     async def member_welcome(self, member):
         """If welcome channel is set, welcome message will be sent there"""
+        print(f"{member.name} joined {member.guild.name}")
+        if member.guild.id == 703106165977907220:
+            return
         data = json_open(settings)
         print(member.name)
         if str(member.guild.id) in list(data.keys()):

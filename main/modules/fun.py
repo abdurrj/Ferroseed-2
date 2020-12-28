@@ -69,6 +69,8 @@ class fun(commands.Cog):
         data = json_open('main/data/user_greet.json')
         data[str(ctx.author.id)] = greet
         json_write('main/data/user_greet.json', data)
+        allowed_mentions = discord.AllowedMentions(users=False)
+        await ctx.send(f"{ctx.author.mention}, I will now respond to `.hi` with {greet}", allowed_mentions=allowed_mentions)
     
 
     # Go to sleep commands
