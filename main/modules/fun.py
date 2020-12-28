@@ -1,4 +1,4 @@
-import discord
+import discord, asyncio
 from discord.ext import commands, tasks
 from discord.ext.commands import Cog
 from datetime import datetime
@@ -159,6 +159,8 @@ class fun(commands.Cog):
         if message.content.lower().startswith("morning") and message.author not in self.morning_list:
             await message.channel.send(f"Morning {message.author.mention}! <:ferroHappy:734285644817367050>", allowed_mentions=allowed_mentions)
             self.morning_list.append(message.author)
+            await asyncio.sleep(6*60*60)
+            self.morning_list.remove(message.author)
 
     @commands.command(hidden=True)
     @commands.has_permissions(administrator=True)
@@ -169,9 +171,9 @@ class fun(commands.Cog):
     async def print_morning(self, ctx):
         print(self.morning_list)
 
-    @tasks.loop(hours=12)
-    async def auto_clear_morning_list(self):
-        self.morning_list = []    
+    # @tasks.loop(hours=12)
+    # async def auto_clear_morning_list(self):
+    #     self.morning_list = []    
 
 
 def setup(client):
