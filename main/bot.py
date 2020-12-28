@@ -88,20 +88,26 @@ async def extension(ctx, task:str=None, module:str=None):
         try:
             client.load_extension('modules.'+module)
             print(f"{module} has been loaded")
+            await ctx.send(f"{module} has been loaded")
         except Exception as error:
             print(f"Unable to load {module}\nError: {error}")
+            await ctx.send(f"Unable to load {module}\nError: {error}")
     elif task == "unload":
         try:
             client.unload_extension('modules.'+module)
             print(f"{module} has been unloaded")
+            await ctx.send(f"{module} has been unloaded")
         except Exception as error:
             print(f"Unable to unload {module}\nError: {error}")
+            await ctx.send(f"Unable to unload {module}\nError: {error}")
     elif task == "reload":
         try:
             client.reload_extension('modules.'+module)
             print(f"Reloaded {module}")
+            await ctx.send(f"Reloaded {module}")
         except Exception as error:
             print(f"Unable to reload {module}\nError: {error}")
+            await ctx.send(f"Unable to reload {module}\nError: {error}")
     else:
         await ctx.send("Please select a task: names, add, remove, load, unload, reload\nfollowed by name of a module")
 
