@@ -163,6 +163,8 @@ class fun(commands.Cog):
 
     @Cog.listener("on_message")
     async def say_morning(self, message):
+        if message.guild.id == 703106165977907220:
+            return
         allowed_mentions = discord.AllowedMentions(users=False)
         if self.morning_response == "yes":
             if message.author == self.client.user:
