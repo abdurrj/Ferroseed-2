@@ -171,7 +171,8 @@ class fun(commands.Cog):
                 await message.channel.send(f"Morning {message.author.mention}! <:ferroHappy:734285644817367050>", allowed_mentions=allowed_mentions)
                 self.morning_list.append(message.author)
                 await asyncio.sleep(6*60*60)
-                self.morning_list.remove(message.author)
+                if message.author in self.morning_list:
+                    self.morning_list.remove(message.author)
 
     @commands.command(hidden=True)
     @commands.has_permissions(administrator=True)
