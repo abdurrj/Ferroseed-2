@@ -139,7 +139,11 @@ class petting(commands.Cog):
         guild_dict = data[str(ctx.guild.id)]
         petcount = str(guild_dict["Total pet"])
         hurtcount = str(guild_dict["Total hurt"])
-        await ctx.send("I've been pet **"+petcount+"x** times and I've hurt all of you **"+hurtcount+"x** times")
+        embed = discord.Embed(colour=discord.Colour.green())
+        embed.add_field(name=f"Hi {ctx.guild.name}", value="These are pet/hurt stats for this server!")
+        embed.add_field(name="Total times pet on this server:", value=f"**{petcount}x** times", inline=False)
+        embed.add_field(name="Total time I've hurt someone on this server", value=f"**{hurtcount}x** times", inline=False)
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def pets(self, ctx):
