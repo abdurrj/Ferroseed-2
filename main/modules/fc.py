@@ -107,7 +107,7 @@ class fc(commands.Cog):
             proceed = "false"
         
         if proceed == "yes":
-            with open(fc_path_test, "w", encoding='utf-8') as fc_dict:
+            with open(fc_path, "w", encoding='utf-8') as fc_dict:
                 json.dump(new_dict, fc_dict, indent=4, ensure_ascii=False, sort_keys=True)
             await ctx.send("fc updated")
         else:
