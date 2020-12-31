@@ -29,8 +29,6 @@ client = commands.Bot(
 async def on_message(message):
     if message.author == client.user:
         return
-    if message.guild.id == 703106165977907220:
-        return
     else:
         await client.process_commands(message)
 
