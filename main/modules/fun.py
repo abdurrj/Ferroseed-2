@@ -80,7 +80,7 @@ class fun(commands.Cog):
     
 
     # Go to sleep commands
-    @commands.command(aliases=['powernap'])
+    @commands.command(aliases=['powernap', 'nap'])
     async def sleep(self, ctx, str:str=None):
         if not str:
             str = ctx.author.mention
