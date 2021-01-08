@@ -13,6 +13,12 @@ class fun(commands.Cog):
         self.morning_response = "yes"
         # self.auto_clear_morning_list.start()
 
+    @commands.command()
+    async def ferro_say(self, ctx, channel:discord.TextChannel, *, msg:str):
+        if not channel:
+            channel = ctx.channel
+        await channel.send(str)
+
     # Naught, for when you don't catch the pokemon
     @commands.command(pass_context=True, name = 'naught', aliases=['not'])
     async def naught(self, ctx):
