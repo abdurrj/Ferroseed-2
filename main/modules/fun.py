@@ -17,7 +17,7 @@ class fun(commands.Cog):
     async def ferro_say(self, ctx, channel:discord.TextChannel, *, msg:str):
         if not channel:
             channel = ctx.channel
-        await channel.send(str)
+        await channel.send(msg)
 
     # Naught, for when you don't catch the pokemon
     @commands.command(pass_context=True, name = 'naught', aliases=['not'])
