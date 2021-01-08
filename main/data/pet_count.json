@@ -35,11 +35,11 @@
         "pet_stat": "random",
         "chance": 0.75,
         "Total pet": 12,
-        "Total hurt": 0,
+        "Total hurt": 1,
         "Members": {
             "138411165075243008": {
                 "pet": 6,
-                "hurt": 0
+                "hurt": 1
             },
             "263810107270234112": {
                 "pet": 1,
