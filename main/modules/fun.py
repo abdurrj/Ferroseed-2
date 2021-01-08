@@ -21,7 +21,7 @@ class fun(commands.Cog):
             await ctx.channel.send(msg)
     
     @commands.command()
-    async def ferro_react(self, ctx, msg:discord.Message,*, reaction):
+    async def ferro_react(self, ctx, msg:discord.Message,*, reaction:tuple):
         for i in reaction:
             try:
                 await msg.add_reaction(i)
