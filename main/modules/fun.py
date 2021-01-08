@@ -22,11 +22,14 @@ class fun(commands.Cog):
     
     @commands.command()
     async def ferro_react(self, ctx, msg:discord.Message,*, reaction:tuple):
+        print(reaction)
         for i in reaction:
+            print(i)
             try:
                 await msg.add_reaction(i)
+                print("reacted")
             except:
-                pass
+                print(f"couldn't react with {i}")
 
     # Naught, for when you don't catch the pokemon
     @commands.command(pass_context=True, name = 'naught', aliases=['not'])
