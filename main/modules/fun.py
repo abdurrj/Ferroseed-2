@@ -169,40 +169,40 @@ class fun(commands.Cog):
         # embed.add_field(name="Time:", value=only_tz_time)
         await ctx.send(embed=embed)
 
-    @commands.command(hidden=True)
-    async def morning_response(self, ctx):
-        if self.morning_response == "yes":
-            await ctx.send("Turning off morning response")
-            self.morning_response = "no"
-            return
-        if self.morning_response == "no":
-            await ctx.send("Turning on morning response")
-            self.morning_response = "yes"
-            return
+    # @commands.command(hidden=True)
+    # async def morning_response(self, ctx):
+    #     if self.morning_response == "yes":
+    #         await ctx.send("Turning off morning response")
+    #         self.morning_response = "no"
+    #         return
+    #     if self.morning_response == "no":
+    #         await ctx.send("Turning on morning response")
+    #         self.morning_response = "yes"
+    #         return
 
-    @Cog.listener("on_message")
-    async def say_morning(self, message):
-        allowed_mentions = discord.AllowedMentions(users=False)
-        if self.morning_response == "yes":
-            if message.author == self.client.user:
-                return
-            data = json_open('main/data/morning_triggers.json')
-            for i in data:
-                if message.content.lower().startswith(i) and message.author not in self.morning_list:
-                    await message.channel.send(f"Morning {message.author.mention}! <:ferroHappy:734285644817367050>", allowed_mentions=allowed_mentions)
-                    self.morning_list.append(message.author)
-                    await asyncio.sleep(6*60*60)
-                    if message.author in self.morning_list:
-                        self.morning_list.remove(message.author)
+    # @Cog.listener("on_message")
+    # async def say_morning(self, message):
+    #     allowed_mentions = discord.AllowedMentions(users=False)
+    #     if self.morning_response == "yes":
+    #         if message.author == self.client.user:
+    #             return
+    #         data = json_open('main/data/morning_triggers.json')
+    #         for i in data:
+    #             if message.content.lower().startswith(i) and message.author not in self.morning_list:
+    #                 await message.channel.send(f"Morning {message.author.mention}! <:ferroHappy:734285644817367050>", allowed_mentions=allowed_mentions)
+    #                 self.morning_list.append(message.author)
+    #                 await asyncio.sleep(6*60*60)
+    #                 if message.author in self.morning_list:
+    #                     self.morning_list.remove(message.author)
 
-    @commands.command(hidden=True)
-    @commands.has_permissions(administrator=True)
-    async def clear_morning(self, ctx):
-        self.morning_list = []
+    # @commands.command(hidden=True)
+    # @commands.has_permissions(administrator=True)
+    # async def clear_morning(self, ctx):
+    #     self.morning_list = []
 
-    @commands.command(hidden=True)
-    async def print_morning(self, ctx):
-        print(self.morning_list)
+    # @commands.command(hidden=True)
+    # async def print_morning(self, ctx):
+    #     print(self.morning_list)
 
     # @tasks.loop(hours=12)
     # async def auto_clear_morning_list(self):
