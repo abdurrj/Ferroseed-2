@@ -13,6 +13,7 @@ reactrole_path = 'main/data/reactrole.json'
 class reactrole(commands.Cog):
     def __init__(self, client):
         self.client = client
+        self.temp_message = None
 
 
     @Cog.listener("on_raw_reaction_add")
@@ -66,13 +67,29 @@ class reactrole(commands.Cog):
                         else:
                             print("role not found")
     
-
+    @commands.command(hidden=True)
+    @commands.has_permissions(manage_roles=True)
+    async def set_message(self, ctx, msg:discord.Message):
+        if not msg:
+            await ctx.send("Please add message URL or message ID")
+            return
+        self.temp_message = msg
+        await ctx.send(f"Unless anything else is specified, roles added with `register_role` command will be added to:\n{msg.jump_url}")
+    
+    
     @commands.command(hidden=True)
     @commands.has_permissions(manage_roles=True)
     async def register_role(self, ctx, reaction, role:discord.Role, message:discord.Message):
         data = json_open(reactrole_path)
         guild_id = ctx.guild.id
         guild_dict = data
+        
+        if not message:
+            message = self.temp_message
+            if not message:
+                await ctx.send("Please specify a message by adding message URL, message ID, or by setting a temporary message with `set_message` command.")
+                return
+
         if reaction.startswith('<'):
             reaction_name = re.findall(r":([^:]*):", reaction)
             reaction_name = reaction_name[0]
@@ -136,10 +153,16 @@ class reactrole(commands.Cog):
             
     @commands.command(hidden=True)
     @commands.has_permissions(manage_roles=True)
-    async def unregister_role(self, ctx, reaction, role:discord.Role, message:discord.Message):
+    async def unregister_role(self, ctx, reaction, role:discord.Role, message:discord.Message=None):
         data = json_open(reactrole_path)
         guild_id = ctx.guild.id
         guild_dict = data
+        if not message:
+            message=self.temp_message
+            if not message:
+                await ctx.send("Please specify a message by adding message URL, message ID, or by setting a temporary message with `set_message` command.")
+                return
+
         if reaction.startswith('<'):
             reaction_name = re.findall(r":([^:]*):", reaction)
             reaction_name = reaction_name[0]
@@ -157,17 +180,11 @@ class reactrole(commands.Cog):
         json_write(reactrole_path, data)
         await ctx.send(f"Removed {reaction} and {role} connection in the database", allowed_mentions=allowed_mentions)
 
+        @commands.command(hidden=True)
+        @commands.has_permissions(manage_messages=True, manage_roles=True)
+        async def message_text(self, ctx, msg_old:discord.Message, msg_new:discord.Message):
+            await msg_old.edit(content=msg_new.content)
+
 
 def setup(client):
     client.add_cog(reactrole(client))
-
-    # @commands.command()
-    # async def reaction_get_emoji_test(self, ctx, emojiname):
-    #     emoji_list = self.client.emojis
-    #     emoji_names = []
-    #     for i in emoji_list:
-    #         emoji_names.append(i.name)
-    #     if emojiname in emoji_names:
-    #         print("in list")
-    #         emoji = discord.utils.find(lambda emoji: emoji.name == emojiname, emoji_list)
-    #         print(emoji)
