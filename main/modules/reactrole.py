@@ -74,7 +74,7 @@ class reactrole(commands.Cog):
             await ctx.send("Please add message URL or message ID")
             return
         self.temp_message = msg
-        await ctx.send(f"Unless anything else is specified, roles added with `register_role` command will be added to:\n{msg.jump_url}")
+        await ctx.send(f"Unless anything else is specified, `register_role` and `unregister_role` command will target:\n{msg.jump_url}")
     
     
     @commands.command(hidden=True)
