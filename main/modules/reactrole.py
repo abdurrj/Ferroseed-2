@@ -180,10 +180,10 @@ class reactrole(commands.Cog):
         json_write(reactrole_path, data)
         await ctx.send(f"Removed {reaction} and {role} connection in the database", allowed_mentions=allowed_mentions)
 
-        @commands.command(hidden=True)
-        @commands.has_permissions(manage_messages=True, manage_roles=True)
-        async def message_text(self, ctx, msg_old:discord.Message, msg_new:discord.Message):
-            await msg_old.edit(content=msg_new.content)
+    @commands.command(hidden=True)
+    @commands.has_permissions(manage_messages=True, manage_roles=True)
+    async def message_text(self, ctx, msg_old:discord.Message, msg_new:discord.Message):
+        await msg_old.edit(content=msg_new.content)
 
 
 def setup(client):
