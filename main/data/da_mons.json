@@ -390,26 +390,6 @@
         ]
     },
     {
-        "name": "Kangaskhan",
-        "Ability": "Early Bird",
-        "Attacks": [
-            "Body Slam",
-            "Sucker Punch",
-            "Dig",
-            "Outrage"
-        ]
-    },
-    {
-        "name": "Seaking",
-        "Ability": "Water Veil",
-        "Attacks": [
-            "Waterfall",
-            "Bounce",
-            "Poison Jab",
-            "Drill Run"
-        ]
-    },
-    {
         "name": "Seaking",
         "Ability": "Water Veil",
         "Attacks": [
@@ -2747,6 +2727,26 @@
             "Taunt",
             "Fire Blast",
             "Zen Headbutt"
+        ]
+    },
+    {
+        "name": "Seadra",
+        "Ability": "Sniper",
+        "Attacks": [
+            "Scald",
+            "Dragon Pulse",
+            "Substitute",
+            "Round"
+        ]
+    },
+    {
+        "name": "Starmie",
+        "Ability": "Analytic",
+        "Attacks": [
+            "Power Gem",
+            "Dazzling Gleam",
+            "Psycho Cut",
+            "Icy Wind"
         ]
     }
 ]
