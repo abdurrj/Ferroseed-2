@@ -138,7 +138,16 @@ class fun(commands.Cog):
     async def eigensleep(self, ctx):
         embed = discord.Embed(
         colour = discord.Colour.green())
-        embed.add_field(name='<:rowNotLikeThis:733807988787118130><:rowNotLikeThis:733807988787118130><:rowNotLikeThis:733807988787118130>', value="<a:RBops:718139734693773330>There are too many of you!<a:RBops2:718139698912034937>")
+        embed.add_field(
+            name=
+            '<:rowNotLikeThis:733807988787118130> '
+            '<:rowNotLikeThis:733807988787118130> '
+            '<:rowNotLikeThis:733807988787118130>',
+            value=
+            "<a:RBops:718139734693773330> "
+            "There are too many of you! "
+            "<a:RBops2:718139698912034937>"
+            )
         await ctx.send(embed=embed)
 
     # Write a better code!
