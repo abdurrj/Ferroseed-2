@@ -144,6 +144,8 @@ class functions(commands.Cog):
             i+=1
             throw = random.sample(range(1, (sides+1)),1)
             dice_throws.append(throw)
+            seed = random.randrange(sys.maxsize)
+            random.Random(seed)
         dice_throws.sort()
         result = [str(i) for i in dice_throws]
         text = ", ".join(result)
