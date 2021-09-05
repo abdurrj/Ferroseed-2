@@ -124,34 +124,56 @@ class functions(commands.Cog):
             await ctx.send("Something went wrong, please check your input, and make sure it's a number")
 
 
-    # Check if this command is still in use. Remove if it is not
     @commands.command()
-    async def roll(self, ctx, participants, winners):
-        # command_user = ctx.message.author
-        if participants.isnumeric() and winners.isnumeric():
-            if int(participants) > 50:
-                await ctx.send("We aren't that many on the server! <a:RSus:707927630787117157>")
-            elif int(winners) == 0:
-                await ctx.send("<a:RWalkAway:710069239607722065>")
-            elif int(participants) == 0:
-                if int(winners) > int(participants):
-                    await ctx.send("<a:RSadBye:718753982360584212> No one entered... and you still tried to pick a winner <a:RSus:707927630787117157>")
-                else:
-                    await ctx.send("<a:RSadBye:718753982360584212> No one entered")
-            else:
-                if int(participants) < int(winners):
-                    await ctx.send("<:RJudge:703166590702714950> There aren't that many entrants.")
-                elif int(participants) == int(winners):
-                    await ctx.send("<a:RSaber:710692428025299024> EVERYONE WINS! <a:RSaber:710692428025299024>")
-                else:
-                    a = random.sample(range(1,(int(participants)+1)),int(winners))
-                    a = sorted(a, key=int)
-                    winner_numbers = [str(winner) for winner in a]
-                    winner_numbers = ', '.join(winner_numbers)
-                    ferro_message = await ctx.send("Congratulations to: "+ winner_numbers)
-                    await discord.Message.add_reaction(ferro_message, "<:RParty:706007725070483507>")
-        else:
-            await ctx.send("<a:RQuestion:713380476357705740> Did you input (positive) numbers?")
+    async def dice(self, ctx, *,initial_input:str=""):
+        listed_input = initial_input.split(" ")
+        sides = 6 ; amount = 1
+        for i in listed_input:
+            if i.endswith("s"):
+                sides = int(i.split("s")[0])
+            
+            if i.endswith("a"):
+                amount = int(i.split("a")[0])
+        
+        if sides>60 or amount>10:
+            await ctx.send("Maximum allowed dice is 10, maximum allowed sides on each die is 60")
+            return
+
+        dice_throws = [] ; i = 0
+        while i<amount:
+            i+=1
+            throw = random.sample(range(1, (sides+1)),1)
+            dice_throws.append(throw)
+        dice_throws.sort()
+        result = [str(i) for i in dice_throws]
+        text = ", ".join(result)
+        await ctx.send("**Result**\n" + f"{text}")
+
+
+# if participants.isnumeric() and winners.isnumeric():
+#             if int(participants) > 50:
+#                 await ctx.send("We aren't that many on the server! <a:RSus:707927630787117157>")
+#             elif int(winners) == 0:
+#                 await ctx.send("<a:RWalkAway:710069239607722065>")
+#             elif int(participants) == 0:
+#                 if int(winners) > int(participants):
+#                     await ctx.send("<a:RSadBye:718753982360584212> No one entered... and you still tried to pick a winner <a:RSus:707927630787117157>")
+#                 else:
+#                     await ctx.send("<a:RSadBye:718753982360584212> No one entered")
+#             else:
+#                 if int(participants) < int(winners):
+#                     await ctx.send("<:RJudge:703166590702714950> There aren't that many entrants.")
+#                 elif int(participants) == int(winners):
+#                     await ctx.send("<a:RSaber:710692428025299024> EVERYONE WINS! <a:RSaber:710692428025299024>")
+#                 else:
+#                     a = random.sample(range(1,(int(participants)+1)),int(winners))
+#                     a = sorted(a, key=int)
+#                     winner_numbers = [str(winner) for winner in a]
+#                     winner_numbers = ', '.join(winner_numbers)
+#                     ferro_message = await ctx.send("Congratulations to: "+ winner_numbers)
+#                     await discord.Message.add_reaction(ferro_message, "<:RParty:706007725070483507>")
+#         else:
+#             await ctx.send("<a:RQuestion:713380476357705740> Did you input (positive) numbers?")
 
 
     # Remove this if it has no more use
