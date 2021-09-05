@@ -49,6 +49,7 @@ class Dexter(commands.Cog):
                 possible_names.append(poke_name)
         if len(possible_names) == 0:
             print("No match")
+            return
         else:
             pokemon = possible_names[0]
 
