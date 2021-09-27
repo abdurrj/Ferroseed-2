@@ -84,7 +84,7 @@ class server_settings(commands.Cog):
             data = json_open(settings)
             guild_dict = data[str(message.guild.id)]
             prefix = guild_dict["prefix"]
-            await message.channel.send(f"My prefix is currently {prefix}")
+            await message.channel.send(f"My prefix is currently `{prefix}`")
 
     @Cog.listener("on_guild_join")
     async def new_guild_prefix(self, guild):
@@ -149,7 +149,8 @@ class server_settings(commands.Cog):
                 welcome_channel = member.guild.get_channel(int(guild_dict["welcome_channel"]))
                 embed = discord.Embed(colour=0x62eb96)
                 embed.add_field(name='Someone new joined the server!', value=f"Please welcome {member.mention}")
-                await welcome_channel.send(embed=embed)
+                message = await welcome_channel.send(embed=embed)
+                await message.add_reaction("<a:RHype:708568633508364310>")
 
 
 def setup(client):

@@ -13,7 +13,6 @@ reactrole_path = 'main/data/reactrole.json'
 class reactrole(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.temp_message = None
 
 
     @Cog.listener("on_raw_reaction_add")
@@ -66,16 +65,7 @@ class reactrole(commands.Cog):
                                 print("member not found")
                         else:
                             print("role not found")
-    
-    @commands.command(hidden=True)
-    @commands.has_permissions(manage_roles=True)
-    async def set_message(self, ctx, msg:discord.Message):
-        if not msg:
-            await ctx.send("Please add message URL or message ID")
-            return
-        self.temp_message = msg
-        await ctx.send(f"Unless anything else is specified, `register_role` and `unregister_role` command will target:\n{msg.jump_url}")
-    
+       
     
     @commands.command(hidden=True)
     @commands.has_permissions(manage_roles=True)
@@ -179,11 +169,6 @@ class reactrole(commands.Cog):
         data = guild_dict
         json_write(reactrole_path, data)
         await ctx.send(f"Removed {reaction} and {role} connection in the database", allowed_mentions=allowed_mentions)
-
-    @commands.command(hidden=True)
-    @commands.has_permissions(manage_messages=True, manage_roles=True)
-    async def message_text(self, ctx, msg_old:discord.Message, msg_new:discord.Message):
-        await msg_old.edit(content=msg_new.content)
 
 
 def setup(client):
