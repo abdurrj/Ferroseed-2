@@ -13,24 +13,7 @@ class fun(commands.Cog):
         self.morning_response = "yes"
         # self.auto_clear_morning_list.start()
 
-    @commands.command()
-    async def ferro_say(self, ctx, channel:discord.TextChannel, *, msg:str):
-        try:
-            await channel.send(msg)
-        except:
-            await ctx.channel.send(msg)
-    
-    @commands.command()
-    async def ferro_react(self, ctx, msg:discord.Message,*, reactions):
-        reactions_list = reactions.split(" ")
-        print(reactions_list)
-        for i in reactions_list:
-            print(i)
-            try:
-                await msg.add_reaction(i)
-                print("reacted")
-            except:
-                print(f"couldn't react with {i}")
+
 
     # Naught, for when you don't catch the pokemon
     @commands.command(pass_context=True, name = 'naught', aliases=['not'])
@@ -134,21 +117,7 @@ class fun(commands.Cog):
             embed.add_field(name='ABDUR!!', value="Go to sleep! <a:RBops2:718139698912034937>")
             await ctx.send(embed=embed)
 
-    @commands.command()
-    async def eigensleep(self, ctx):
-        embed = discord.Embed(
-        colour = discord.Colour.green())
-        embed.add_field(
-            name=
-            '<:rowNotLikeThis:733807988787118130> '
-            '<:rowNotLikeThis:733807988787118130> '
-            '<:rowNotLikeThis:733807988787118130>',
-            value=
-            "<a:RBops:718139734693773330> "
-            "There are too many of you! "
-            "<a:RBops2:718139698912034937>"
-            )
-        await ctx.send(embed=embed)
+
 
     # Write a better code!
     @commands.command()
@@ -184,44 +153,6 @@ class fun(commands.Cog):
         # embed.add_field(name="Time:", value=only_tz_time)
         await ctx.send(embed=embed)
 
-    # @commands.command(hidden=True)
-    # async def morning_response(self, ctx):
-    #     if self.morning_response == "yes":
-    #         await ctx.send("Turning off morning response")
-    #         self.morning_response = "no"
-    #         return
-    #     if self.morning_response == "no":
-    #         await ctx.send("Turning on morning response")
-    #         self.morning_response = "yes"
-    #         return
-
-    # @Cog.listener("on_message")
-    # async def say_morning(self, message):
-    #     allowed_mentions = discord.AllowedMentions(users=False)
-    #     if self.morning_response == "yes":
-    #         if message.author == self.client.user:
-    #             return
-    #         data = json_open('main/data/morning_triggers.json')
-    #         for i in data:
-    #             if message.content.lower().startswith(i) and message.author not in self.morning_list:
-    #                 await message.channel.send(f"Morning {message.author.mention}! <:ferroHappy:734285644817367050>", allowed_mentions=allowed_mentions)
-    #                 self.morning_list.append(message.author)
-    #                 await asyncio.sleep(6*60*60)
-    #                 if message.author in self.morning_list:
-    #                     self.morning_list.remove(message.author)
-
-    # @commands.command(hidden=True)
-    # @commands.has_permissions(administrator=True)
-    # async def clear_morning(self, ctx):
-    #     self.morning_list = []
-
-    # @commands.command(hidden=True)
-    # async def print_morning(self, ctx):
-    #     print(self.morning_list)
-
-    # @tasks.loop(hours=12)
-    # async def auto_clear_morning_list(self):
-    #     self.morning_list = []    
 
 
 def setup(client):

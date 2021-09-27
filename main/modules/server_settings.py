@@ -21,8 +21,38 @@ class server_settings(commands.Cog):
         self.client = client
 
 
+    @commands.command(hidden=True)
+    @commands.has_permissions(administrator=True)
+    async def ferro_say(self, ctx, channel:discord.TextChannel, *, msg:str):
+        try:
+            await channel.send(msg)
+        except:
+            await ctx.channel.send("Error sending the message. Could be permission issue...")
+
+
+    @commands.command(hidden=True)
+    @commands.has_permissions(administrator=True)
+    async def edit_message(self, ctx, msg_old:discord.Message, msg_new:discord.Message):
+        await msg_old.edit(content=msg_new.content)
+    
+
+    @commands.command(hidden=True)
+    @commands.has_permissions(administrator=True)
+    async def ferro_react(self, ctx, msg:discord.Message,*, reactions):
+        reactions_list = reactions.split(" ")
+        print(reactions_list)
+        for i in reactions_list:
+            print(i)
+            try:
+                await msg.add_reaction(i)
+                print("reacted")
+            except:
+                print(f"couldn't react with {i}")
+
+
     #### Prefix settings
     @Cog.listener("on_message")
+    @commands.has_permissions(administrator=True)
     async def reset_prefix(self, message):
         """Reset the server prefix, will work no matter what prefix is set"""
         if message.author == self.client.user:
@@ -38,7 +68,23 @@ class server_settings(commands.Cog):
             data[str(message.guild.id)] = guild_dict
             json_write(settings, data)
             await message.channel.send("Prefix has been reset to fb!. To change it, use fb!change_prefix")
+
+
+
+    @Cog.listener("on_message")
+    async def pingForPrefix(self, message):
+        """Ping ferro to see prefix"""
+        if message.author == self.client.user:
+            return
+        if message.guild == None:
+            await message.author.send("Hi, I do not have any commands for use in DM")
+            return
         
+        if (self.client.user in message.mentions) and (len(message.content.split(" ")) < 2):
+            data = json_open(settings)
+            guild_dict = data[str(message.guild.id)]
+            prefix = guild_dict["prefix"]
+            await message.channel.send(f"My prefix is currently {prefix}")
 
     @Cog.listener("on_guild_join")
     async def new_guild_prefix(self, guild):
@@ -49,6 +95,8 @@ class server_settings(commands.Cog):
             "welcome_channel":None
         }
         json_write(settings, data)
+
+
 
 
     @Cog.listener("on_guild_remove")
