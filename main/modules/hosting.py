@@ -20,6 +20,7 @@ class Hosting(commands.Cog):
             return
 
 
+
     # To end channels created in the category "A raid category", but also not allowing to close
     # the channel "A raid category", which is the only channel .host command works
     @commands.command()
@@ -92,6 +93,32 @@ class Hosting(commands.Cog):
                 channel = discord.utils.get(guild.voice_channels, name=channel_name)
                 await channel.delete()
 
+
+
+"""
+    @commands.command()
+    async def ctchan(self, ctx, *,channelName): # User must specify channel name when calling command
+        await ctx.send("Name of category:")
+
+        # A check to make sure that the the bot waits for a message by the user who called the command
+        # This check is called on in wait_for
+        def check(m):
+            return m.author == ctx.author
+        
+        # Using .content.upper() since all category names are in upper case
+        categoryName = await self.client.wait_for('message', check=check, timeout=15)
+
+        # Looking for a CategoryChannel, using discord.utils.find, with lambda expression to match name
+        categoryChannel = discord.utils.get(ctx.guild.categories, name=categoryName.content.upper())
+
+        # If it found a category
+        if categoryChannel:
+            # Create the channel with desired name, in the category it found
+            await ctx.guild.create_text_channel(channelName, category=categoryChannel)
+            return
+        # Didn't find a category? Tell the user it didn't find one, don't create a channel
+        await ctx.send(f"Couldn't find a category by the name __**{categoryName}**__. Aborting")
+"""
 
 def setup(client):
     client.add_cog(Hosting(client))
