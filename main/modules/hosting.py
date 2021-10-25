@@ -109,6 +109,7 @@ class Hosting(commands.Cog):
         categoryName = await self.client.wait_for('message', check=check, timeout=15)
 
         # Looking for a CategoryChannel, using discord.utils.find, with lambda expression to match name
+        categoryChannel = discord.utils.find(lambda cat : cat.name = categoryName.content.upper(), sly.guild.categories)
         categoryChannel = discord.utils.get(ctx.guild.categories, name=categoryName.content.upper())
 
         # If it found a category
@@ -118,6 +119,22 @@ class Hosting(commands.Cog):
             return
         # Didn't find a category? Tell the user it didn't find one, don't create a channel
         await ctx.send(f"Couldn't find a category by the name __**{categoryName}**__. Aborting")
+
+
+
+
+        if message.content.startswith("sly ctchan"):
+            channelName = message.content.split("sly ctchan ", 1)[1]
+            await message.channel.send("Name of category:")
+            def check(m):
+                return m.author == message.author
+        
+            categoryName = await client.wait_for('message', check=check, timeout=15)
+            categoryChannel = discord.utils.find(lambda cat : cat.name == categoryName.content.upper(), message.guild.categories)
+            if categoryChannel:
+                await message.guild.create_text_channel(channelName, category=categoryChannel)
+                return
+            await message.channel.send(f"Couldn't find a category by the name __**{categoryName}**__. Aborting")
 """
 
 def setup(client):
