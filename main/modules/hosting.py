@@ -95,7 +95,7 @@ class Hosting(commands.Cog):
 
 
 
-"""
+
     @commands.command()
     async def ctchan(self, ctx, *,channelName): # User must specify channel name when calling command
         await ctx.send("Name of category:")
@@ -109,8 +109,8 @@ class Hosting(commands.Cog):
         categoryName = await self.client.wait_for('message', check=check, timeout=15)
 
         # Looking for a CategoryChannel, using discord.utils.find, with lambda expression to match name
-        categoryChannel = discord.utils.find(lambda cat : cat.name = categoryName.content.upper(), sly.guild.categories)
-        categoryChannel = discord.utils.get(ctx.guild.categories, name=categoryName.content.upper())
+        categoryChannel = discord.utils.find(lambda cat : cat.name.upper() == categoryName.content.upper(), ctx.guild.categories)
+        # categoryChannel = discord.utils.get(ctx.guild.categories, name=categoryName.content.upper())
 
         # If it found a category
         if categoryChannel:
@@ -118,10 +118,10 @@ class Hosting(commands.Cog):
             await ctx.guild.create_text_channel(channelName, category=categoryChannel)
             return
         # Didn't find a category? Tell the user it didn't find one, don't create a channel
-        await ctx.send(f"Couldn't find a category by the name __**{categoryName}**__. Aborting")
+        await ctx.send(f"Couldn't find a category by the name __**{categoryName.content.upper()}**__. Aborting")
 
 
-
+"""
 
         if message.content.startswith("sly ctchan"):
             channelName = message.content.split("sly ctchan ", 1)[1]
