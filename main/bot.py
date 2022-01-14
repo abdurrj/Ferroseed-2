@@ -91,6 +91,12 @@ async def extension(ctx, task:str=None, module:str=None):
             print(f"Unable to load {module}\nError: {error}")
             await ctx.send(f"Unable to load {module}\nError: {error}")
     elif task == "unload":
+        if (module=="RaidCommands"):
+            try:
+                client.unload_extension("RaidCommands")
+            except Exception as error:
+                print(f"Unable to unload {module}\nError: {error}")
+                await ctx.send(f"Unable to unload {module}\nError: {error}")
         try:
             client.unload_extension('modules.'+module)
             print(f"{module} has been unloaded")
