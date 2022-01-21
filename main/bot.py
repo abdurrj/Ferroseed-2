@@ -82,50 +82,43 @@ async def extension(ctx, task:str=None, module:str=None):
     elif task == "remove":
         modules.pop(module)
         ext_modules_write(modules)
-    elif task == "load":
-        if (module=="RaidCommands"):
-            try:
-                client.unload_extension('RaidCommands')
-                print(f"{module} has been loaded")
-                await ctx.send(f"{module} has been loaded")
-            except Exception as error:
-                print(f"Unable to unload {module}\nError: {error}")
-                await ctx.send(f"Unable to unload {module}\nError: {error}")
-        else:    
-            try:
+        
+    if task=='load':
+        try:
+            if module=='RaidCommands':
+                client.load_extension(module)
+            else:
                 client.load_extension('modules.'+module)
-                print(f"{module} has been loaded")
-                await ctx.send(f"{module} has been loaded")
-            except Exception as error:
-                print(f"Unable to load {module}\nError: {error}")
-                await ctx.send(f"Unable to load {module}\nError: {error}")
-    elif task == "unload":
-        if (module=="RaidCommands"):
-            try:
-                client.unload_extension('RaidCommands')
-                print(f"{module} has been unloaded")
-                await ctx.send(f"{module} has been unloaded")
-            except Exception as error:
-                print(f"Unable to unload {module}\nError: {error}")
-                await ctx.send(f"Unable to unload {module}\nError: {error}")
-        else:
-            try:
+            print(f"{module} has been loaded")
+            await ctx.send(f"{module} has been loaded")
+        except Exception as error:
+            print(f"Unable to load {module}\nError: {error}")
+            await ctx.send(f"Unable to load {module}\nError: {error}")
+    elif task=='unload':
+        if module=='BotSettings':
+            await ctx.send(f"Cannot unload {module}. This module only supports \"reload\"")
+            return
+        try:
+            if module=='RaidCommands':
+                client.unload_extension(module)
+            else:
                 client.unload_extension('modules.'+module)
-                print(f"{module} has been unloaded")
-                await ctx.send(f"{module} has been unloaded")
-            except Exception as error:
-                print(f"Unable to unload {module}\nError: {error}")
-                await ctx.send(f"Unable to unload {module}\nError: {error}")
+            print(f"{module} has been unloaded")
+            await ctx.send(f"{module} has been unloaded")
+        except Exception as error:
+            print(f"Unable to unload {module}\nError: {error}")
+            await ctx.send(f"Unable to unload {module}\nError: {error}")
     elif task == "reload":
         try:
-            client.reload_extension('modules.'+module)
+            if module=='RaidCommands':
+                client.reload_extension(module)
+            else:
+                client.reload_extension('modules.'+module)
             print(f"Reloaded {module}")
             await ctx.send(f"Reloaded {module}")
         except Exception as error:
             print(f"Unable to reload {module}\nError: {error}")
             await ctx.send(f"Unable to reload {module}\nError: {error}")
-    else:
-        await ctx.send("Please select a task: names, add, remove, load, unload, reload\nfollowed by name of a module")
 
-
+    
 client.run(TOKEN)
