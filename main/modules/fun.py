@@ -126,8 +126,6 @@ class fun(commands.Cog):
         timezone_names = ['Malaysia', 'Central Europe', 'West Europe', 'Newfoundland', 'US Eastern', 'US Central', 'US Pacific']
 
         output = []
-        # only_tz_name = []
-        # only_tz_time = []
         for i in range(0,len(timezones)):
             tz = timezones[i]
             tz = pytz.timezone(tz)
@@ -139,18 +137,12 @@ class fun(commands.Cog):
                 time = datetime.now(tz).strftime("%I:%M %p") + ""
             
             timezone_time = tz_name + "\n" + time
-            # only_tz_name.append(tz_name)
-            # only_tz_time.append(time)
             output.append(timezone_time)
 
         times = '\n\n'.join(i for i in output)
-        # only_tz_name = '\n'.join(i for i in only_tz_name)
-        # only_tz_time = '\n'.join(i for i in only_tz_time)
 
         embed = discord.Embed(title='Afss time!  🌎🌍🌏', color=discord.Colour.green())
         embed.add_field(name='Time:', value=times, inline=True)
-        # embed.add_field(name="Time zone:" value=only_tz_name)
-        # embed.add_field(name="Time:", value=only_tz_time)
         await ctx.send(embed=embed)
 
 
